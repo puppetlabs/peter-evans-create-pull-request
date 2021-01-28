@@ -31,15 +31,15 @@
   "dependencies": {
     "@actions/core": "1.2.6",
     "@actions/exec": "1.0.4",
-    "@octokit/core": "3.2.4",
-    "@octokit/plugin-paginate-rest": "2.8.0",
-    "@octokit/plugin-rest-endpoint-methods": "4.5.2",
+    "@octokit/core": "3.2.5",
+    "@octokit/plugin-paginate-rest": "2.9.0",
+    "@octokit/plugin-rest-endpoint-methods": "4.9.0",
     "uuid": "8.3.2"
   },
   "devDependencies": {
     "@types/jest": "26.0.20",
     "@types/node": "14.14.22",
-    "@typescript-eslint/parser": "4.14.0",
+    "@typescript-eslint/parser": "4.14.1",
     "@vercel/ncc": "0.27.0",
     "eslint": "7.18.0",
     "eslint-plugin-github": "4.1.1",

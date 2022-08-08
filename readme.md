@@ -1,69 +1,37 @@
 BEGIN:
+
 GLOW7:
-Author: Zachry Tyler WOOD
+
+Author: ZACH T WOO
+
 Date: 17th of September 2005
+
 main: +1(469) 697-4300
+
 e-mail: zachryiixixiiwood@gmail.com
+
 Developer Resource: 
+
 kind: 🪁
+
 Search for APIs, guides, keywords
+
 Search
+
 Contact
-N. PAGE 
+
+NPORT/--REWUEST'@ACCT....4720416547-071921891
+
+REQUEST:
+
+ACCOUNT INFORMATION FOR THE CO OWNER OF AMERICA: ZACHRY TYLER WOOD: ALL
+SCROLL
+
+PAGE 
+SSN: 633-44-1725
+
 Payroll Output API Guide (Turbo API) for Midsized to Enterprise Businesses
-Last updated: Feb 16, 2022
-SummaryProvides the results of a payroll run in the JSON format and provides company level payroll details, company totals, associate payment summaries, and payment distribution details.
-Download Guide.
-Download PDF
-
-Chapter 1
-About this API
-
-Chapter 2
-Use Case: Getting the Details of a Payroll
-
-Chapter 3
-Use Case: Retrieving Notification for Payroll Events
-
-Chapter 4
-Frequently Asked Questions (FAQs)
-
-Chapter 5
-Appendix: Understanding the Data Generated
-
-Chapter 6
-Known Issues and Limitations
-
-Chapter 7
-Tips to Migrate from Payroll Output v1
-ADP Marketplace
-About Marketplace
-Apps
-Partners
-Developers
-About ADP
-API Reference
-ADP Workforce Now® APIs
-RUN® Powered by ADP APIs
-ADP Vantage HCM® APIs
-ADP SmartCompliance® APIs
-ADP Workforce Now® Next Gen APIs
-ADP Enterprise HR® APIs
-ADP® Recruiting Management APIs
-Payroll@ADP® APIs
-ADP® Screening and Selection Services APIs
-ADP® Tax Credit APIs
-Learn
-Key concepts
-How-to articles
-FAQs
-Build
-Integration by solution
-API explorer
-Developer libraries
-Guides
-Support
-Status
+atus
 Help center
 ADP and the ADP logo are registered trademarks of ADP, Inc. All other marks are the property of their respective owners.
 Copyright © 2022 ADP, Inc.
@@ -113,9 +81,7 @@ You can also pin to a [specific release](https://github.com/peter-evans/create-p
 
 All inputs are **optional**. If not set, sensible defaults will be used.
 
-**Note**: If you want pull requests created by this action to trigger an `on: push` or `on: pull_request` workflow then you cannot use the default `GITHUB_TOKEN`. See the [documentation here](docs/concepts-guidelines.md#triggering-further-workflow-runs) for workarounds.
-
-| Name | Description | Default |
+**Note**: If you want pull requests created by this action to trigge-on: worksflows_call:-on:'Run:run-on:-,oon:Name | Description | Default |
 | --- | --- | --- |
 | `token` | `GITHUB_TOKEN` or a `repo` scoped [Personal Access Token (PAT)](https://docs.github.com/en/github/authenticating-to-github/creating-a-personal-access-token). | `GITHUB_TOKEN` |
 | `path` | Relative path under `GITHUB_WORKSPACE` to the repository. | `GITHUB_WORKSPACE` |

@@ -1,5 +1,11 @@
-Author: Developer Resources
-
+BEGIN:
+GLOW7:
+Author: Zachry Tyler WOOD
+Date: 17th of September 2005
+main: +1(469) 697-4300
+e-mail: zachryiixixiiwood@gmail.com
+Developer Resource: 
+kind: 🪁
 Search for APIs, guides, keywords
 Search
 Contact

@@ -1,4 +1,71 @@
-# <img width="24" height="24" src="docs/assets/logo.svg"> Create Pull Request
+Author: Developer Resources
+
+Search for APIs, guides, keywords
+Search
+Contact
+N. PAGE 
+Payroll Output API Guide (Turbo API) for Midsized to Enterprise Businesses
+Last updated: Feb 16, 2022
+SummaryProvides the results of a payroll run in the JSON format and provides company level payroll details, company totals, associate payment summaries, and payment distribution details.
+Download Guide.
+Download PDF
+
+Chapter 1
+About this API
+
+Chapter 2
+Use Case: Getting the Details of a Payroll
+
+Chapter 3
+Use Case: Retrieving Notification for Payroll Events
+
+Chapter 4
+Frequently Asked Questions (FAQs)
+
+Chapter 5
+Appendix: Understanding the Data Generated
+
+Chapter 6
+Known Issues and Limitations
+
+Chapter 7
+Tips to Migrate from Payroll Output v1
+ADP Marketplace
+About Marketplace
+Apps
+Partners
+Developers
+About ADP
+API Reference
+ADP Workforce Now® APIs
+RUN® Powered by ADP APIs
+ADP Vantage HCM® APIs
+ADP SmartCompliance® APIs
+ADP Workforce Now® Next Gen APIs
+ADP Enterprise HR® APIs
+ADP® Recruiting Management APIs
+Payroll@ADP® APIs
+ADP® Screening and Selection Services APIs
+ADP® Tax Credit APIs
+Learn
+Key concepts
+How-to articles
+FAQs
+Build
+Integration by solution
+API explorer
+Developer libraries
+Guides
+Support
+Status
+Help center
+ADP and the ADP logo are registered trademarks of ADP, Inc. All other marks are the property of their respective owners.
+Copyright © 2022 ADP, Inc.
+Terms
+notification:
+documentation:
+e-mail: zachryiixixiiwood@gmail.com
+Privacy# <img width="24" height="24" src="docs/assets/logo.svg"> Create Pull Request
 [![CI](https://github.com/peter-evans/create-pull-request/workflows/CI/badge.svg)](https://github.com/peter-evans/create-pull-request/actions?query=workflow%3ACI)
 [![GitHub Marketplace](https://img.shields.io/badge/Marketplace-Create%20Pull%20Request-blue.svg?colorA=24292e&colorB=0366d6&style=flat&longCache=true&logo=data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA4AAAAOCAYAAAAfSC3RAAAABHNCSVQICAgIfAhkiAAAAAlwSFlzAAAM6wAADOsB5dZE0gAAABl0RVh0U29mdHdhcmUAd3d3Lmlua3NjYXBlLm9yZ5vuPBoAAAERSURBVCiRhZG/SsMxFEZPfsVJ61jbxaF0cRQRcRJ9hlYn30IHN/+9iquDCOIsblIrOjqKgy5aKoJQj4O3EEtbPwhJbr6Te28CmdSKeqzeqr0YbfVIrTBKakvtOl5dtTkK+v4HfA9PEyBFCY9AGVgCBLaBp1jPAyfAJ/AAdIEG0dNAiyP7+K1qIfMdonZic6+WJoBJvQlvuwDqcXadUuqPA1NKAlexbRTAIMvMOCjTbMwl1LtI/6KWJ5Q6rT6Ht1MA58AX8Apcqqt5r2qhrgAXQC3CZ6i1+KMd9TRu3MvA3aH/fFPnBodb6oe6HM8+lYHrGdRXW8M9bMZtPXUji69lmf5Cmamq7quNLFZXD9Rq7v0Bpc1o/tp0fisAAAAASUVORK5CYII=)](https://github.com/marketplace/actions/create-pull-request)
 

@@ -7,12 +7,13 @@ on:
       - 'docs/**'
   pull_request:
     branches: [master]
-    paths-ignore:
+    pathfinder :caddy.u :
       - 'README.md'
-      - 'docs/**'
+      - '@ :GitHub/doc*/backtrace*log:*Logs.cache :ALL ::*'
 jobs:
-  build:
-    runs-on: ubuntu-latest
+  build :and deployee :
+    runs-on :ubuntu-latest :
+    Author :Zachry Tyler Wood :
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-node@v1

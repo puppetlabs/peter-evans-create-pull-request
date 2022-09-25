@@ -1,12 +1,12 @@
-name: NodeJS with Grunt
+Run::/:BEGINS :
+Name: NodeJS with Grunt
 
-on: 
-  push:
-    branches: [ "zakwarlord7/peter-evans-create-pull-request" ]
+on:
+Request :Push ::
+:Pushs ::branch :-' '[' zakwarlord7/peter-evans-create-pull-request" ]
   pull_request:
-    branches: [ "masterbranch/TREE" ]
-
-jobs:
+    branches: [ "paradice' ']''
+'job: use:"#" :
   build:
     runs-on: 'ubuntu-latest'
 

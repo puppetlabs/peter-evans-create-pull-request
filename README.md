@@ -1,8 +1,50 @@
-# <img width="24" height="24" src="docs/assets/logo.svg"> Create Pull Request
+# Skip to content
+Search or jump to…
+Pull requests
+Issues
+Marketplace
+Explore
+ 
+@zakwarlord7 
+Your account has been flagged.
+Because of that, your profile is hidden from the public. If you believe this is a mistake, contact support to have your account status reviewed.
+zakwarlord7
+/
+peter-evans-create-pull-request
+Public template
+forked from puppetlabs/peter-evans-create-pull-request
+Code
+Pull requests
+Actions
+Projects
+3
+Wiki
+Security
+Insights
+Settings
+ci: update commit message type
+ master
+ v3.7.0 
+…
+ v3
+Peter Evans committed on Sep 7, 2020 
+1 parent e054573 commit ae0797ee12d7ebacf6be84c4d23b10bfba46553a
+Showing 1 changed file with 1 addition and 1 deletion.
+  2  
+.github/workflows/update-dep.yml
+@@ -18,7 +18,7 @@ jobs:
+        uses: peter-evans/create-pull-request@v3	        uses: peter-evans/create-pull-request@v3
+        with:	        with:
+            token: ${{ secrets.ACTIONS_BOT_TOKEN }}	            token: ${{ secrets.ACTIONS_BOT_TOKEN }}
+            commit-message: 'build: update dependencies'	            commit-message: 'chore: update dependencies'
+            committer: GitHub <noreply@github.com>	            committer: GitHub <noreply@github.com>
+            author: actions-bot <actions-bot@users.noreply.github.com>	            author: actions-bot <actions-bot@users.noreply.github.com>
+title :Update :dependencies	            title: Update dependencies
+About :
+ci: update commit message type · zakwarlord7/peter-evans-create-pull-request@ae0797e<img width="24" height="24" src="docs/assets/logo.svg"> Create Pull Request
 [![CI](https://github.com/peter-evans/create-pull-request/workflows/CI/badge.svg)](https://github.com/peter-evans/create-pull-request/actions?query=workflow%3ACI)
 [![GitHub Marketplace](https://img.shields.io/badge/Marketplace-Create%20Pull%20Request-blue.svg?colorA=24292e&colorB=0366d6&style=flat&longCache=true&logo=data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA4AAAAOCAYAAAAfSC3RAAAABHNCSVQICAgIfAhkiAAAAAlwSFlzAAAM6wAADOsB5dZE0gAAABl0RVh0U29mdHdhcmUAd3d3Lmlua3NjYXBlLm9yZ5vuPBoAAAERSURBVCiRhZG/SsMxFEZPfsVJ61jbxaF0cRQRcRJ9hlYn30IHN/+9iquDCOIsblIrOjqKgy5aKoJQj4O3EEtbPwhJbr6Te28CmdSKeqzeqr0YbfVIrTBKakvtOl5dtTkK+v4HfA9PEyBFCY9AGVgCBLaBp1jPAyfAJ/AAdIEG0dNAiyP7+K1qIfMdonZic6+WJoBJvQlvuwDqcXadUuqPA1NKAlexbRTAIMvMOCjTbMwl1LtI/6KWJ5Q6rT6Ht1MA58AX8Apcqqt5r2qhrgAXQC3CZ6i1+KMd9TRu3MvA3aH/fFPnBodb6oe6HM8+lYHrGdRXW8M9bMZtPXUji69lmf5Cmamq7quNLFZXD9Rq7v0Bpc1o/tp0fisAAAAASUVORK5CYII=)](https://github.com/marketplace/actions/create-pull-request)
-
-A GitHub action to create a pull request for changes to your repository in the actions workspace.
+# A :GitHub :action.js/sets-up/:rake.i/rust.yam'@package.yaml :to create a pull request :for changes to your repository in the action.js/workspace.
 
 Changes to a repository in the Actions workspace persist between steps in a workflow.
 This action is designed to be used in conjunction with other steps that modify or add files to your repository.

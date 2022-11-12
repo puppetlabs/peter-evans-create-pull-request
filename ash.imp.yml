@@ -2,19 +2,12 @@
 '"'*'*'B'E'G'I'N'' '::/':starts'' '':'''''-on'':'On'' ':'' '"'-'on'"'
 GLOW7: .docx.txt'
 #!/use/bin/bash/bitore.sig
-Runs:
-#+ -"diff --git a/Vscode b/Vscode
-new file mode 100644
-index 000000000000..d69fdd06453c
---- /dev/null
-+++ b/Vscode
-@@ -0,0 +1,2608 @@
-+BEGIN:
+Runs BEGIN:
 +On::Runs:
 +Runs:Run:
 +Run-on:
 +-on:
-+Echo: hello-🌍!-🐛-#-fix/731/,
++'#':''Echo'":','' '"hello-🌍!-🐛-#-fix/731/,
 +"name": "my-electron-app",
 +  "version": "1.0.0",
 +  "description": "Hello World!",
@@ -23,11 +16,10 @@ index 000000000000..d69fdd06453c
 +[Volume].]: "[12753750].00]"''
 +ITEM_ID: "BITORE_34173"''
 +"name": "my-electron-app",
-+  "version": "0.0.0",
++  "version": "0'.0'.0",
 +  "description": "Hello World!'@https://git.io/codeql-language-support# For most projects, this workflow file will not need changing; you simply need
 +- # to commit it to your repository.
-+- # MyCodeQL languages.
-+#
++- # MyCodeQL languages
 '-'' '+'Name'' ':'My'Code'.'S'Q'L'"'
 +'#' This workflow uses actions that are not certified by GitHub.''
 +'#' They are provided by a third-party and are governed by''

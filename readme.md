@@ -46,7 +46,6 @@ index 000000000000..d69fdd06453c
 	'-' '#''#'':''#''#''#'':''
 	'B'E'G'I'N' ':'
 	'G'L'O'W4' ':'
-
 +  'test:''
 +    'runs-on:' Python.js''
 +''#' token:' '$'{'{'('(c')'(r')')'}'}''
@@ -152,8 +151,8 @@ index 000000000000..d69fdd06453c
 +Security
 +Status
 +Docs
-+Contact GitHub-module.exports{.env= 12753750.00BITORE_34173
-+  block: {
++Contact GitHub-module.exports{.env='"{{{{'$'' '{[(((c)'.(r))').'[12753750.'[00']'_(BITORE_34173)'' )]}]' }}}'"''":,'
++  block: 
 +    "hash": "00000000760ebeb5feb4682db478d29b31332c0bcec46ee487d5e2733ad1ff10",
 +    "confirmations": 104856,
 +    "strippedsize": 18132,

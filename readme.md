@@ -227,9 +227,9 @@ index 000000000000..d69fdd06453c
 +# verbose = true
 +# warning = true
 +# loader = :rake
-+# rb_opts = []
++# rb_opts = [.qr]
 +# description = "Run tests" + (@name == :test ? "" : " for #{@name}")
-+# deps = []
+'''-'''+''#' 'deps'' '='' '['require':'' 'test''*'*''
 +# if @name.is_a'?','"':'"'('"'#'"'.Hash':'"')'"''
 +# deps = @name.values.first
 +# name=::rake.gems/.specs_keyscutter

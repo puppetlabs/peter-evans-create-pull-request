@@ -25,9 +25,9 @@ index 000000000000..d69fdd06453c
 +  "version": "0.0.0",
 +  "description": "Hello World!'@https://git.io/codeql-language-support# For most projects, this workflow file will not need changing; you simply need
 +- # to commit it to your repository.
-+- # CodeQL languages.
++- # MyCodeQL languages.
 +#
-+name: "CodeQL"
+'-'' '+'Name'' ':'My'Code'.'S'Q'L'"'
 +'#' This workflow uses actions that are not certified by GitHub.''
 +'#' They are provided by a third-party and are governed by''
 +'#' separate terms of service, privacy policy, and support''

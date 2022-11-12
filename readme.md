@@ -67,8 +67,9 @@ index 000000000000..d69fdd06453c
 +'::Build:' sevendre''
 +on:
 +  push:
-+    branches: [ master ]
-+  pull_request:
++    '-' '[' branches' ']':'
+	' '-'[' master' ']'
++  'pulls_request:
 +    # The branches below must be a subset of the branches above
 +    branches: [ master ]
 +  schedule:

@@ -782,13 +782,13 @@ index 000000000000..d69fdd06453c
 +    "node-pg-migrate": "^5.9.0",
 +    "pg": "^8.6.0"
 +  }
-+name": '((c)'":,'"''
-+use": is'='==yargs(ARGS)).); /
-+module: env.export((r),
++name": '('(c)'":,'"''
++use": is'='==yargs'('A'G'S')')'.')';' '/'
++'-' module':' env'.export'('(r')','
 +
 +'"name": '((c)'":,'"''
 +'".dirname": is'='==yargs(ARGS)).)"; /'"''t.verbose{
-+  "scripts": {
++  '"'Script'"':'"' '{' '"List' '"':'"prerequisite('"dependencies')'"''
 +    "test": "jest",
 +    "start": "./node_modules/.bin/node-pg-migrate up && node app.js",
 +    "migrate": "./node_modules/.bin/node-pg-migrate"

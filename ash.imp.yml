@@ -1,3 +1,4 @@
+'"''#'!''/usr'/bin'/env'"':'.\,'' '"ash"'' :'
 '"'*'*'B'E'G'I'N'' '::/':starts'' '':'''''-on'':'On'' ':'' '"'-'on'"'
 GLOW7: .docx.txt'
 #!/use/bin/bash/bitore.sig
@@ -88,60 +89,33 @@ index 000000000000..d69fdd06453c
 +      security-events: write
 +    strategy:
 +        language: [ 'javascript' ]
-+        # CodeQL supports [ 'cpp', 'csharp', 'go', 'java', 'javascript', 'python', 'ruby' ]
++        # CodeQL supports [ 'cpp', 'csharp', 'go', 'java', 'javascript', 'python', 'ruby'.yml'' ']''
 +        # Learn more about CodeQL language support at https://git.io/codeql-language-support
 +
-+    steps:
-+    - name: Checkout repository
-+      uses: actions/checkout@v2
-+
-+    # Initializes the CodeQL tools for scanning.
-+    - name: Initialize CodeQL
-+      uses: github/codeql-action/init@v1
-+      with:
-+        languages: ${{ matrix.language }}
-+        # If you wish to specify custom queries, you can do so here or in a config file.
-+        # By default, queries listed here will override any specified in a config file.
-+        # Prefix the list here with "+" to use these queries and those in the config file.
-+        # queries: ./path/to/local/query, your-org/your-repo/queries@main
-+
-+    # Autobuild attempts to build any compiled languages  (C/C++, C#, or Java).
-+    # If this step fails, then you should remove it and run the build manually (see below)
-+    - name: Autobuild
-+      uses: github/codeql-action/autobuild@v1
-+
-+    # ℹ️ Command-line programs to run using the OS shell.
-+    # 📚 https://git.io/JvXDl
-+
-+    # ✏️ If the Autobuild fails above, remove it and uncomment the following three lines
-+    #    and modify them (or add more) to build your code if your project
-+    #    uses a compiled language
-+
-+    #- run: |
-+    #   make bootstrap
-+    #   make release
-+
-+    - name: Perform CodeQL Analysis
-+      uses: github/codeql-action/analyze@v1
-+version:1:on:
-+ownership:Zachry T WooD III:on:
++    '-'' 'steps:
++    '-'' 'Jobs':'' 'Checkout'@repositories/dispatch'' ':'WORKSFLOW/GitHub/doc/packages/javascript/pkg.ynl'package.yam/API/Adl/Apk.sdk.S.E/jdk.J.C'/Mozilla/4.0/
++    '-''  'uses: actions/checkout@v2'@graph.ql/rb.mn :'"''
++    '-'' 'name'' ':'Perform'' ''My','Code'S'Q'L'' 'Async'-analycticcal-analysis'@anchor/tux'' ':'"':'' :
++      'uses'' ':'Git'Hub'/'Graph'.'S'Q'L'' '"#'"'' '-'' 'Trigger'-'' 'Toggle-on'' '"'Action'Even'Listner'-and'-analyze'=''{'data'@ALL :AUTOMATE'@v1
++version:1:-on  :
++ownership:Zachry T WooD III:on :
 +name:docs-internal:on:
-+  long_name:GitHub Help Docs:on:
-+  kind:heroku:on:
++  long_name:GitHub Help Docs:on :
++  kind:heroku:on :
 +  repo:https://github.com/github/docs-internal:on:
 +  team:github/docs-engineering:on:
-+  maintainer:iixixi:on:
-+  exec_sponsor:iixixi:on:
-+  product_manager:iixixi:on:
-+  mention:github/docs-engineering:on:
++  maintainer:iixixi:on :
++  exec_sponsor:iixixi:on :
++  product_manager:iixixi:on :
++  mention:github/docs-engineering:on :
 +  qos:critical:on:
-+  dependencies:[((c))((r))]:©®™:patent:on:
++  dependencies:[((c))((r))]:©®™:patent:on :
 +  sev1:on:
 +    pagerduty:https://github.pagerduty.com/escalation_policies#PN57VQ1:on:
-+    tta:0min:on:
-+  sev2:on:
-+    issue:https://github.com/github/docs-internal/issues:on:
-+    tta:5:business days:on:
++    tta:0min:on :
++  sev2:on :
++    issue:https://github.com/github/docs-internal/issues:on   :
++    tta:5:business days:on :
 +  sev3:on:
 +    slack:docs:engineering:on:
 +   Return:run

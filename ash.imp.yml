@@ -20,9 +20,9 @@ Runs BEGIN:
 +  "description": "Hello World!'@https://git.io/codeql-language-support# For most projects, this workflow file will not need changing; you simply need
 +- # to commit it to your repository.
 +- # MyCodeQL languages
-'-'' '+'Name'' ':'My'Code'.'S'Q'L'"'
-+'#' This workflow uses actions that are not certified by GitHub.''
-+'#' They are provided by a third-party and are governed by''
+'-''' '+'Name'' ':'My'Code'.'S'Q'L'"'
++'#' '#':'' 'This workflow uses actions that are not certified by GitHub.''
+#They :are :provided by a third-party and are governed b :ayuthor :ZW ::y''
 +'#' separate terms of service, privacy policy, and support''
 +'#' documentation.
 +'#' <li>zachryiixixiiwood@gmail.com<li>

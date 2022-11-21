@@ -3,10 +3,14 @@
 - [Use case: Create a pull request to update X on push](#use-case-create-a-pull-request-to-update-x-on-push)
   - [Update project authors](#update-project-authors)
   - [Keep a branch up-to-date with another](#keep-a-branch-up-to-date-with-another)
+- [Use case: Create a pull request to update X on release](#use-case-create-a-pull-request-to-update-x-on-release)
+  - [Update changelog](#update-changelog)
 - [Use case: Create a pull request to update X periodically](#use-case-create-a-pull-request-to-update-x-periodically)
   - [Update NPM dependencies](#update-npm-dependencies)
   - [Update Gradle dependencies](#update-gradle-dependencies)
+  - [Update Cargo dependencies](#update-cargo-dependencies)
   - [Update SwaggerUI for GitHub Pages](#update-swaggerui-for-github-pages)
+  - [Keep a fork up-to-date with its upstream](#keep-a-fork-up-to-date-with-its-upstream)
   - [Spider and download a website](#spider-and-download-a-website)
 - [Use case: Create a pull request to update X by calling the GitHub API](#use-case-create-a-pull-request-to-update-x-by-calling-the-github-api)
   - [Call the GitHub API from an external service](#call-the-github-api-from-an-external-service)
@@ -16,6 +20,7 @@
 - [Misc workflow tips](#misc-workflow-tips)
   - [Filtering push events](#filtering-push-events)
   - [Dynamic configuration using variables](#dynamic-configuration-using-variables)
+  - [Setting the pull request body from a file](#setting-the-pull-request-body-from-a-file)
   - [Debugging GitHub Actions](#debugging-github-actions)
 
 
@@ -81,6 +86,45 @@ jobs:
           branch: production-promotion
 ```
 
+## Use case: Create a pull request to update X on release
+
+This pattern will work well for updating any kind of static content based on the tagged commit of a release. Note that because `release` is one of the [events which checkout a commit](concepts-guidelines.md#events-which-checkout-a-commit) it is necessary to supply the `base` input to the action.
+
+### Update changelog
+
+Raises a pull request to update the `CHANGELOG.md` file based on the tagged commit of the release.
+Note that [git-chglog](https://github.com/git-chglog/git-chglog/) requires some configuration files to exist in the repository before this workflow will work.
+
+This workflow assumes the tagged release was made on a default branch called `master`.
+
+```yml
+name: Update Changelog
+on:
+  release:
+    types: [published]
+jobs:
+  updateChangelog:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - name: Update Changelog
+        run: |
+          curl -o git-chglog -L https://github.com/git-chglog/git-chglog/releases/download/0.9.1/git-chglog_linux_amd64
+          chmod u+x git-chglog
+          ./git-chglog -o CHANGELOG.md
+          rm git-chglog
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v3
+        with:
+          commit-message: update changelog
+          title: Update Changelog
+          body: Update changelog to reflect release changes
+          branch: update-changelog
+          base: master
+```
+
 ## Use case: Create a pull request to update X periodically
 
 This pattern will work well for updating any kind of static content from an external source. The workflow executes on a schedule and raises a pull request when there are changes.
@@ -89,7 +133,7 @@ This pattern will work well for updating any kind of static content from an exte
 
 This workflow will create a pull request for npm dependencies.
 It works best in combination with a build workflow triggered on `push` and `pull_request`.
-A [Personal Access Token (PAT)](https://help.github.com/en/github/authenticating-to-github/creating-a-personal-access-token-for-the-command-line) can be used in order for the creation of the pull request to trigger further workflows. See the [documentation here](https://github.com/peter-evans/create-pull-request/blob/master/docs/concepts-guidelines.md#triggering-further-workflow-runs) for further details.
+A [Personal Access Token (PAT)](https://docs.github.com/en/github/authenticating-to-github/creating-a-personal-access-token) can be used in order for the creation of the pull request to trigger further workflows. See the [documentation here](concepts-guidelines.md#triggering-further-workflow-runs) for further details.
 
 ```yml
 name: Update Dependencies
@@ -183,6 +227,41 @@ jobs:
             branch: update-dependencies
 ```
 
+### Update Cargo dependencies
+
+The following workflow will create a pull request for Cargo dependencies.
+It optionally uses [`cargo-edit`](https://github.com/killercup/cargo-edit) to update `Cargo.toml` and keep it in sync with `Cargo.lock`.
+
+```yml
+name: Update Dependencies
+on:
+  schedule:
+    - cron:  '0 1 * * 1'
+jobs:
+  update-dep:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Update dependencies
+        run: |
+          cargo install cargo-edit
+          cargo update
+          cargo upgrade --to-lockfile
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v3
+        with:
+            token: ${{ secrets.PAT }}
+            commit-message: Update dependencies
+            title: Update dependencies
+            body: |
+              - Dependency updates
+  
+              Auto-generated by [create-pull-request][1]
+  
+              [1]: https://github.com/peter-evans/create-pull-request
+            branch: update-dependencies
+```
+
 ### Update SwaggerUI for GitHub Pages
 
 When using [GitHub Pages to host Swagger documentation](https://github.com/peter-evans/swagger-github-pages), this workflow updates the repository with the latest distribution of [SwaggerUI](https://github.com/swagger-api/swagger-ui).
@@ -240,6 +319,41 @@ jobs:
           branch: swagger-ui-updates
 ```
 
+### Keep a fork up-to-date with its upstream
+
+This example is designed to be run in a seperate repository from the fork repository itself.
+The aim of this is to prevent committing anything to the fork's default branch would cause it to differ from the upstream.
+
+In the following example workflow, `owner/repo` is the upstream repository and `fork-owner/repo` is the fork. It assumes the default branch of the upstream repository is called `master`.
+
+The [Personal Access Token (PAT)](https://docs.github.com/en/github/authenticating-to-github/creating-a-personal-access-token) should have `repo` scope. Additionally, if the upstream makes changes to the `.github/workflows` directory, the action will be unable to push the changes to a branch and throw the error "_(refusing to allow a GitHub App to create or update workflow `.github/workflows/xxx.yml` without `workflows` permission)_". To allow these changes to be pushed to the fork, add the `workflow` scope to the PAT. Of course, allowing this comes with the risk that the workflow changes from the upstream could run and do something unexpected. Disabling GitHub Actions in the fork is highly recommended to prevent this.
+
+When you merge the pull request make sure to choose the [`Rebase and merge`](https://docs.github.com/en/github/collaborating-with-issues-and-pull-requests/about-pull-request-merges#rebase-and-merge-your-pull-request-commits) option. This will make the fork's commits match the commits on the upstream.
+
+```yml
+name: Update fork
+on:
+  schedule:
+    - cron:  '0 0 * * 0'
+jobs:
+  updateFork:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          repository: fork-owner/repo
+      - name: Reset the default branch with upstream changes
+        run: |
+          git remote add upstream https://github.com/owner/repo.git
+          git fetch upstream master:upstream-master
+          git reset --hard upstream-master
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v3
+        with:
+          token: ${{ secrets.PAT }}
+          branch: upstream-changes
+```
+
 ### Spider and download a website
 
 This workflow spiders a website and downloads the content. Any changes to the website will be raised in a pull request.
@@ -277,7 +391,7 @@ jobs:
 
 ## Use case: Create a pull request to update X by calling the GitHub API
 
-You can use the GitHub API to trigger a webhook event called [`repository_dispatch`](https://help.github.com/en/github/automating-your-workflow-with-github-actions/events-that-trigger-workflows#external-events-repository_dispatch) when you want to trigger a workflow for activity that happens outside of GitHub.
+You can use the GitHub API to trigger a webhook event called [`repository_dispatch`](https://docs.github.com/en/actions/reference/events-that-trigger-workflows#repository_dispatch) when you want to trigger a workflow for any activity that happens outside of GitHub.
 This pattern will work well for updating any kind of static content from an external source.
 
 You can modify any of the examples in the previous section to work in this fashion.
@@ -295,7 +409,7 @@ on:
 An `on: repository_dispatch` workflow can be triggered by a call to the GitHub API as follows.
 
 - `[username]` is a GitHub username
-- `[token]` is a `repo` scoped [Personal Access Token](https://help.github.com/en/articles/creating-a-personal-access-token-for-the-command-line)
+- `[token]` is a `repo` scoped [Personal Access Token](https://docs.github.com/en/github/authenticating-to-github/creating-a-personal-access-token)
 - `[repository]` is the name of the repository the workflow resides in.
 
 ```
@@ -326,7 +440,8 @@ An `on: repository_dispatch` workflow can be triggered from another workflow wit
 
 This is a pattern that lends itself to automated code linting and fixing. A pull request can be created to fix or modify something during an `on: pull_request` workflow. The pull request containing the fix will be raised with the original pull request as the base. This can be then be merged to update the original pull request and pass any required tests.
 
-Note that due to [limitations on forked repositories](https://help.github.com/en/actions/automating-your-workflow-with-github-actions/authenticating-with-the-github_token#permissions-for-the-github_token) workflows for this use case do not work for pull requests raised from forks.
+Note that due to [token restrictions on public repository forks](https://docs.github.com/en/actions/configuring-and-managing-workflows/authenticating-with-the-github_token#permissions-for-the-github_token), workflows for this use case do not work for pull requests raised from forks.
+Private repositories can be configured to [enable workflows](https://docs.github.com/en/github/administering-a-repository/disabling-or-limiting-github-actions-for-a-repository#enabling-workflows-for-private-repository-forks) from forks to run without restriction. 
 
 ### autopep8
 
@@ -409,7 +524,7 @@ jobs:
 
 The following examples show how configuration for the action can be dynamically defined in a previous workflow step.
 
-The recommended method is to use [`set-output`](https://help.github.com/en/github/automating-your-workflow-with-github-actions/development-tools-for-github-actions#set-an-output-parameter-set-output). Note that the step where output variables are defined must have an id.
+The recommended method is to use [`set-output`](https://docs.github.com/en/actions/reference/workflow-commands-for-github-actions#setting-an-output-parameter). Note that the step where output variables are defined must have an id.
 
 ```yml
       - name: Set output variables
@@ -425,31 +540,36 @@ The recommended method is to use [`set-output`](https://help.github.com/en/githu
           body: ${{ steps.vars.outputs.pr_body }}
 ```
 
-Alternatively, [`set-env`](https://help.github.com/en/github/automating-your-workflow-with-github-actions/development-tools-for-github-actions#set-an-environment-variable-set-env) can be used to create environment variables.
+### Setting the pull request body from a file
+
+This example shows how file content can be read into a variable and passed to the action.
+The content must be [escaped to preserve newlines](https://github.community/t/set-output-truncates-multiline-strings/16852/3).
 
 ```yml
-      - name: Set environment variables
+      - id: get-pr-body
         run: |
-          echo ::set-env name=PULL_REQUEST_TITLE::"[Test] Add report file $(date +%d-%m-%Y)"
-          echo ::set-env name=PULL_REQUEST_BODY::"This PR was auto-generated on $(date +%d-%m-%Y) \
-            by [create-pull-request](https://github.com/peter-evans/create-pull-request)."
+          body=$(cat pr-body.txt)
+          body="${body//'%'/'%25'}"
+          body="${body//$'\n'/'%0A'}"
+          body="${body//$'\r'/'%0D'}" 
+          echo ::set-output name=body::$body
+
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v3
         with:
-          title: ${{ env.PULL_REQUEST_TITLE }}
-          body: ${{ env.PULL_REQUEST_BODY }}
+          body: ${{ steps.get-pr-body.outputs.body }}
 ```
 
 ### Debugging GitHub Actions
 
 #### Runner Diagnostic Logging
 
-[Runner diagnostic logging](https://help.github.com/en/actions/automating-your-workflow-with-github-actions/managing-a-workflow-run#enabling-runner-diagnostic-logging) provides additional log files that contain information about how a runner is executing an action.
+[Runner diagnostic logging](https://docs.github.com/en/actions/configuring-and-managing-workflows/managing-a-workflow-run#enabling-runner-diagnostic-logging) provides additional log files that contain information about how a runner is executing an action.
 To enable runner diagnostic logging, set the secret `ACTIONS_RUNNER_DEBUG` to `true` in the repository that contains the workflow.
 
 #### Step Debug Logging
 
-[Step debug logging](https://help.github.com/en/actions/automating-your-workflow-with-github-actions/managing-a-workflow-run#enabling-step-debug-logging) increases the verbosity of a job's logs during and after a job's execution.
+[Step debug logging](https://docs.github.com/en/actions/configuring-and-managing-workflows/managing-a-workflow-run#enabling-step-debug-logging) increases the verbosity of a job's logs during and after a job's execution.
 To enable step debug logging set the secret `ACTIONS_STEP_DEBUG` to `true` in the repository that contains the workflow.
 
 #### Output Various Contexts

@@ -10,6 +10,11 @@ interface Repository {
   repo: string
 }
 
+interface Pull {
+  number: number
+  html_url: string
+}
+
 export class GitHubHelper {
   private octokit: InstanceType<typeof Octokit>
 
@@ -18,6 +23,7 @@ export class GitHubHelper {
     if (token) {
       options.auth = `${token}`
     }
+    options.baseUrl = process.env['GITHUB_API_URL'] || 'https://api.github.com'
     this.octokit = new Octokit(options)
   }
 
@@ -33,7 +39,7 @@ export class GitHubHelper {
     inputs: Inputs,
     baseRepository: string,
     headBranch: string
-  ): Promise<number> {
+  ): Promise<Pull> {
     // Try to create the pull request
     try {
       const {data: pull} = await this.octokit.pulls.create({
@@ -47,12 +53,17 @@ export class GitHubHelper {
       core.info(
         `Created pull request #${pull.number} (${headBranch} => ${inputs.base})`
       )
-      return pull.number
+      return {
+        number: pull.number,
+        html_url: pull.html_url
+      }
     } catch (e) {
       if (
-        !e.message ||
-        !e.message.includes(`A pull request already exists for ${headBranch}`)
+        e.message &&
+        e.message.includes(`A pull request already exists for ${headBranch}`)
       ) {
+        core.info(`A pull request already exists for ${headBranch}`)
+      } else {
         throw e
       }
     }
@@ -74,7 +85,10 @@ export class GitHubHelper {
     core.info(
       `Updated pull request #${pull.number} (${headBranch} => ${inputs.base})`
     )
-    return pull.number
+    return {
+      number: pull.number,
+      html_url: pull.html_url
+    }
   }
 
   async getRepositoryParent(headRepository: string): Promise<string> {
@@ -98,16 +112,14 @@ export class GitHubHelper {
     const headBranch = `${headOwner}:${inputs.branch}`
 
     // Create or update the pull request
-    const pullNumber = await this.createOrUpdate(
-      inputs,
-      baseRepository,
-      headBranch
-    )
+    const pull = await this.createOrUpdate(inputs, baseRepository, headBranch)
 
     // Set outputs
     core.startGroup('Setting outputs')
-    core.setOutput('pull-request-number', pullNumber)
-    core.exportVariable('PULL_REQUEST_NUMBER', pullNumber)
+    core.setOutput('pull-request-number', pull.number)
+    core.setOutput('pull-request-url', pull.html_url)
+    // Deprecated
+    core.exportVariable('PULL_REQUEST_NUMBER', pull.number)
     core.endGroup()
 
     // Set milestone, labels and assignees
@@ -127,7 +139,7 @@ export class GitHubHelper {
     if (Object.keys(updateIssueParams).length > 0) {
       await this.octokit.issues.update({
         ...this.parseRepository(baseRepository),
-        issue_number: pullNumber,
+        issue_number: pull.number,
         ...updateIssueParams
       })
     }
@@ -146,7 +158,7 @@ export class GitHubHelper {
       try {
         await this.octokit.pulls.requestReviewers({
           ...this.parseRepository(baseRepository),
-          pull_number: pullNumber,
+          pull_number: pull.number,
           ...requestReviewersParams
         })
       } catch (e) {

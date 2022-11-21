@@ -1,5 +1,9 @@
 import * as core from '@actions/core'
-import {createOrUpdateBranch} from './create-or-update-branch'
+import {
+  createOrUpdateBranch,
+  getWorkingBaseAndType,
+  WorkingBaseType
+} from './create-or-update-branch'
 import {GitHubHelper} from './github-helper'
 import {GitCommandManager} from './git-command-manager'
 import {GitAuthHelper} from './git-auth-helper'
@@ -11,7 +15,9 @@ export interface Inputs {
   commitMessage: string
   committer: string
   author: string
+  signoff: boolean
   branch: string
+  deleteBranch: boolean
   branchSuffix: string
   base: string
   pushToFork: string
@@ -80,32 +86,32 @@ export async function createPullRequest(inputs: Inputs): Promise<void> {
       core.endGroup()
     }
 
-    // Determine if the checked out ref is a valid base for a pull request
-    // The action needs the checked out HEAD ref to be a branch
-    // This check will fail in the following cases:
-    // - HEAD is detached
-    // - HEAD is a merge commit (pull_request events)
-    // - HEAD is a tag
-    core.startGroup('Checking the checked out ref')
-    const symbolicRefResult = await git.exec(
-      ['symbolic-ref', 'HEAD', '--short'],
-      true
-    )
-    if (symbolicRefResult.exitCode != 0) {
-      core.debug(`${symbolicRefResult.stderr}`)
+    core.startGroup('Checking the base repository state')
+    const [workingBase, workingBaseType] = await getWorkingBaseAndType(git)
+    core.info(`Working base is ${workingBaseType} '${workingBase}'`)
+    // When in detached HEAD state (checked out on a commit), we need to
+    // know the 'base' branch in order to rebase changes.
+    if (workingBaseType == WorkingBaseType.Commit && !inputs.base) {
       throw new Error(
-        'The checked out ref is not a valid base for a pull request. Unable to continue.'
+        `When the repository is checked out on a commit instead of a branch, the 'base' input must be supplied.`
       )
     }
-    const workingBase = symbolicRefResult.stdout.trim()
-    // Exit if the working base is a PR branch created by this action.
-    // This may occur when using a PAT instead of GITHUB_TOKEN because
-    // a PAT allows workflow actions to trigger further events.
-    if (workingBase.startsWith(inputs.branch)) {
+    // If the base is not specified it is assumed to be the working base.
+    const base = inputs.base ? inputs.base : workingBase
+    // Throw an error if the base and branch are not different branches
+    // of the 'origin' remote. An identically named branch in the `fork`
+    // remote is perfectly fine.
+    if (branchRemoteName == 'origin' && base == inputs.branch) {
       throw new Error(
-        `Working base branch '${workingBase}' was created by this action. Unable to continue.`
+        `The 'base' and 'branch' for a pull request must be different branches. Unable to continue.`
       )
     }
+    // For self-hosted runners the repository state persists between runs.
+    // This command prunes the stale remote ref when the pull request branch was
+    // deleted after being merged or closed. Without this the push using
+    // '--force-with-lease' fails due to "stale info."
+    // https://github.com/peter-evans/create-pull-request/issues/633
+    await git.exec(['remote', 'prune', branchRemoteName])
     core.endGroup()
 
     // Apply the branch suffix if set
@@ -166,7 +172,8 @@ export async function createPullRequest(inputs: Inputs): Promise<void> {
       inputs.commitMessage,
       inputs.base,
       inputs.branch,
-      branchRemoteName
+      branchRemoteName,
+      inputs.signoff
     )
     core.endGroup()
 
@@ -181,29 +188,34 @@ export async function createPullRequest(inputs: Inputs): Promise<void> {
         `HEAD:refs/heads/${inputs.branch}`
       ])
       core.endGroup()
+    }
 
-      // Set the base. It would have been '' if not specified as an input
-      inputs.base = result.base
+    // Set the base. It would have been '' if not specified as an input
+    inputs.base = result.base
 
-      if (result.hasDiffWithBase) {
-        // Create or update the pull request
-        await githubHelper.createOrUpdatePullRequest(
-          inputs,
-          baseRemote.repository,
-          branchRepository
-        )
-      } else {
-        // If there is no longer a diff with the base delete the branch
+    if (result.hasDiffWithBase) {
+      // Create or update the pull request
+      await githubHelper.createOrUpdatePullRequest(
+        inputs,
+        baseRemote.repository,
+        branchRepository
+      )
+    } else {
+      // There is no longer a diff with the base
+      // Check we are in a state where a branch exists
+      if (['updated', 'not-updated'].includes(result.action)) {
         core.info(
           `Branch '${inputs.branch}' no longer differs from base branch '${inputs.base}'`
         )
-        core.info(`Closing pull request and deleting branch '${inputs.branch}'`)
-        await git.push([
-          '--delete',
-          '--force',
-          branchRemoteName,
-          `refs/heads/${inputs.branch}`
-        ])
+        if (inputs.deleteBranch) {
+          core.info(`Deleting branch '${inputs.branch}'`)
+          await git.push([
+            '--delete',
+            '--force',
+            branchRemoteName,
+            `refs/heads/${inputs.branch}`
+          ])
+        }
       }
     }
   } catch (error) {
